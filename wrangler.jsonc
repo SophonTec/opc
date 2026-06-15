@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "opc-console",
+  "main": ".open-next/worker.js",
+  // Keep the *.workers.dev URL alive alongside the custom domain.
+  "workers_dev": true,
+  "compatibility_date": "2025-09-23",
+  // nodejs_compat is required by the OpenNext Cloudflare adapter.
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  // Production custom domain. Requires the sophontex.com zone to be on Cloudflare
+  // DNS; wrangler then provisions the DNS record + TLS cert automatically.
+  "routes": [{ "pattern": "opc.sophontex.com", "custom_domain": true }]
+  // Runtime secrets (SUPABASE_SERVICE_ROLE_KEY, GEMINI_API_KEY, INGEST_SECRET,
+  // STRIPE_*, CRON_SECRET) are set via `wrangler secret put <NAME>` or the
+  // Workers dashboard, NOT committed here. NEXT_PUBLIC_* are inlined at build
+  // time and must be present as env vars when `opennextjs-cloudflare build` runs.
+}
